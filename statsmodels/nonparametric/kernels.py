@@ -224,3 +224,14 @@ def wang_ryzin_reg(h, Xi, x):
     Suggested by Li and Racine in [1] ch.4
     """
     return h ** abs(Xi - x)
+
+def epanechnikov(x_0,x,width):
+    """
+    For a point x_0 in x, return the weight for the given width.
+    """
+    def D(t):
+        if t <= 1:
+            return float(1-t*t)*3/4
+        else:
+            return 0
+    return D(abs(x-x_0)/width)
