@@ -224,14 +224,22 @@ def wang_ryzin_reg(h, Xi, x):
     Suggested by Li and Racine in [1] ch.4
     """
     return h ** abs(Xi - x)
-
-def epanechnikov(x_0,x,width):
+def epanechnikov(h, Xi, x):
     """
-    For a point x_0 in x, return the weight for the given width.
+    epanechnikov Kernel for continuous variables
+    Parameters
+    ----------
+    h : 1-D ndarray, shape (K,)
+        The bandwidths used to estimate the value of the kernel function.
+    Xi : 1-D ndarray, shape (K,)
+        The value of the training set.
+    x : 1-D ndarray, shape (K,)
+        The value at which the kernel density is being estimated.
+    Returns
+    -------
+    kernel_value : ndarray, shape (nobs, K)
+        The value of the kernel function at each training point for each var.
     """
-    def D(t):
-        if t <= 1:
-            return float(1-t*t)*3/4
-        else:
-            return 0
-    return D(abs(x-x_0)/width)
+    u = (Xi - x) / h
+    u[np.abs(u) > 1] = 0
+    return (3. / 4) * (1 - u**2)
